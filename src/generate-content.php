@@ -13,7 +13,11 @@ $parsedown = new Parsedown();
 
 while(FALSE !== ($entry = readdir($dirHandle))) {
 	if (strpos($entry, '.') !== 0) {
-		echo $entry . PHP_EOL;
+		$markdownContent = file_get_contents($config['directories']['data'] . $entry);
+		$output = $parsedown->text($markdownContent);
+		$fileHandle = fopen($config['directories']['html'] . str_replace('.md', '.html', $entry), 'a+');
+		fwrite($fileHandle, $output);
+		fclose($fileHandle);
 	}
 }
 
